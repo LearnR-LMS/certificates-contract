@@ -41,7 +41,6 @@ pub fn execute(
     match msg {
         ExecuteMsg::Mint {
             id,
-            owner,
         } => mint(deps, id),
         // ExecuteMsg::Increment {} => try_increment(deps),
         // ExecuteMsg::Reset { count } => try_reset(deps, info, count),

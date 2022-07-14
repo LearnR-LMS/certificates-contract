@@ -11,7 +11,7 @@ pub struct InstantiateMsg {
 #[serde(rename_all = "snake_case")]
 pub enum ExecuteMsg {
     Mint {
-        id: String,
+        id: String
     },
 }
 
