@@ -39,6 +39,10 @@ pub fn execute(
     msg: ExecuteMsg,
 ) -> Result<Response, ContractError> {
     match msg {
+        ExecuteMsg::Mint {
+            id,
+            owner,
+        } => mint(deps, id),
         // ExecuteMsg::Increment {} => try_increment(deps),
         // ExecuteMsg::Reset { count } => try_reset(deps, info, count),
     }
@@ -54,6 +58,24 @@ pub fn query(deps: Deps, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
 fn query_token_uri(deps: Deps, id: String) -> StdResult<CountResponse> {
     let state = CERTIFICATE.load(deps.storage)?;
     Ok(CountResponse { count: state.count })
+}
+
+pub fn mint(
+    deps: DepsMut,
+    id: String,
+) -> Result<Response, ContractError> {
+    let certificate = Certificate {
+        id
+    };
+    let key = pen.certificate.as_bytes();
+    if (store(deps.storage).may_load(key)?).is_some() {
+        // id is already taken
+        return Err(ContractError::IdTaken { id: certificate.id });
+    }
+    store(deps.storage).save(key, &certificate)?;
+    Ok(Response::new()
+        .add_attribute("method", "Mint")
+        .add_attribute("id", certificate.id))
 }
 
 // #[cfg(test)]
